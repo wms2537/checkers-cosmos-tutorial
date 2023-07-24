@@ -113,6 +113,7 @@ import (
 	checkersmodule "github.com/wms2537/checkers/x/checkers"
 	checkersmodulekeeper "github.com/wms2537/checkers/x/checkers/keeper"
 	checkersmoduletypes "github.com/wms2537/checkers/x/checkers/types"
+
 	// this line is used by starport scaffolding # stargate/app/moduleImport
 
 	appparams "github.com/wms2537/checkers/app/params"
@@ -120,7 +121,7 @@ import (
 )
 
 const (
-	AccountAddressPrefix = "cosmos"
+	AccountAddressPrefix = "wm"
 	Name                 = "checkers"
 )
 
@@ -187,6 +188,7 @@ var (
 		stakingtypes.NotBondedPoolName: {authtypes.Burner, authtypes.Staking},
 		govtypes.ModuleName:            {authtypes.Burner},
 		ibctransfertypes.ModuleName:    {authtypes.Minter, authtypes.Burner},
+		checkersmoduletypes.ModuleName: nil,
 		// this line is used by starport scaffolding # stargate/app/maccPerms
 	}
 )
@@ -520,6 +522,7 @@ func New(
 	)
 
 	app.CheckersKeeper = *checkersmodulekeeper.NewKeeper(
+		app.BankKeeper,
 		appCodec,
 		keys[checkersmoduletypes.StoreKey],
 		keys[checkersmoduletypes.MemStoreKey],
