@@ -64,6 +64,8 @@ paths:
                       type: string
                     red:
                       type: string
+                    winner:
+                      type: string
               pagination:
                 type: object
                 properties:
@@ -191,6 +193,8 @@ paths:
                   black:
                     type: string
                   red:
+                    type: string
+                  winner:
                     type: string
         default:
           description: An unexpected error response.
@@ -46692,6 +46696,17 @@ definitions:
     properties:
       gameIndex:
         type: string
+  checkers.checkers.MsgPlayMoveResponse:
+    type: object
+    properties:
+      capturedX:
+        type: integer
+        format: int32
+      capturedY:
+        type: integer
+        format: int32
+      winner:
+        type: string
   checkers.checkers.Params:
     type: object
     description: Params defines the parameters for the module.
@@ -46712,6 +46727,8 @@ definitions:
             black:
               type: string
             red:
+              type: string
+            winner:
               type: string
       pagination:
         type: object
@@ -46755,6 +46772,8 @@ definitions:
             type: string
           red:
             type: string
+          winner:
+            type: string
   checkers.checkers.QueryGetSystemInfoResponse:
     type: object
     properties:
@@ -46783,6 +46802,8 @@ definitions:
       black:
         type: string
       red:
+        type: string
+      winner:
         type: string
   checkers.checkers.SystemInfo:
     type: object
