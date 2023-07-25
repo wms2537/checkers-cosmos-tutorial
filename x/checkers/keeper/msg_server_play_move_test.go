@@ -145,7 +145,7 @@ func TestPlayMoveEmitted(t *testing.T) {
 	require.NotNil(t, ctx)
 	events := sdk.StringifyEvents(ctx.EventManager().ABCIEvents())
 	require.Len(t, events, 2)
-	event := events[0]
+	event := events[1]
 	require.EqualValues(t, sdk.StringEvent{
 		Type: "move-played",
 		Attributes: []sdk.Attribute{

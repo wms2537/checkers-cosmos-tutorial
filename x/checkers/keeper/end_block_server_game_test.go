@@ -31,7 +31,7 @@ func TestForfeitUnplayed(t *testing.T) {
 	}, systemInfo)
 	events := sdk.StringifyEvents(ctx.EventManager().ABCIEvents())
 	require.Len(t, events, 2)
-	event := events[0]
+	event := events[1]
 	require.EqualValues(t, sdk.StringEvent{
 		Type: "game-forfeited",
 		Attributes: []sdk.Attribute{
@@ -69,8 +69,8 @@ func TestForfeitOlderUnplayed(t *testing.T) {
 		FifoTailIndex: "2",
 	}, nextGame)
 	events := sdk.StringifyEvents(ctx.EventManager().ABCIEvents())
-	require.Len(t, events, 2)
-	event := events[0]
+	require.Len(t, events, 3)
+	event := events[2]
 	require.EqualValues(t, sdk.StringEvent{
 		Type: "game-forfeited",
 		Attributes: []sdk.Attribute{
@@ -120,14 +120,20 @@ func TestForfeit2OldestUnplayedIn1Call(t *testing.T) {
 		FifoTailIndex: "3",
 	}, systemInfo)
 	events := sdk.StringifyEvents(ctx.EventManager().ABCIEvents())
-	require.Len(t, events, 2)
-	event := events[0]
+	require.Len(t, events, 5)
+	event := events[3]
 	require.EqualValues(t, sdk.StringEvent{
 		Type: "game-forfeited",
 		Attributes: []sdk.Attribute{
 			{Key: "game-index", Value: "1"},
 			{Key: "winner", Value: "*"},
 			{Key: "board", Value: "*b*b*b*b|b*b*b*b*|*b*b*b*b|********|********|r*r*r*r*|*r*r*r*r|r*r*r*r*"},
+		},
+	}, event)
+	event = events[4]
+	require.EqualValues(t, sdk.StringEvent{
+		Type: "game-forfeited",
+		Attributes: []sdk.Attribute{
 			{Key: "game-index", Value: "2"},
 			{Key: "winner", Value: "*"},
 			{Key: "board", Value: "*b*b*b*b|b*b*b*b*|*b*b*b*b|********|********|r*r*r*r*|*r*r*r*r|r*r*r*r*"},
@@ -167,7 +173,7 @@ func TestForfeitPlayedOnce(t *testing.T) {
 	}, systemInfo)
 	events := sdk.StringifyEvents(ctx.EventManager().ABCIEvents())
 	require.Len(t, events, 3)
-	event := events[0]
+	event := events[2]
 	require.EqualValues(t, sdk.StringEvent{
 		Type: "game-forfeited",
 		Attributes: []sdk.Attribute{
@@ -215,8 +221,8 @@ func TestForfeitOlderPlayedOnce(t *testing.T) {
 		FifoTailIndex: "2",
 	}, systemInfo)
 	events := sdk.StringifyEvents(ctx.EventManager().ABCIEvents())
-	require.Len(t, events, 3)
-	event := events[0]
+	require.Len(t, events, 4)
+	event := events[3]
 	require.EqualValues(t, sdk.StringEvent{
 		Type: "game-forfeited",
 		Attributes: []sdk.Attribute{
@@ -286,8 +292,8 @@ func TestForfeit2OldestPlayedOnceIn1Call(t *testing.T) {
 		FifoTailIndex: "3",
 	}, systemInfo)
 	events := sdk.StringifyEvents(ctx.EventManager().ABCIEvents())
-	require.Len(t, events, 3)
-	event := events[0]
+	require.Len(t, events, 7)
+	event := events[5]
 	require.EqualValues(t,
 		sdk.StringEvent{
 			Type: "game-forfeited",
@@ -295,6 +301,13 @@ func TestForfeit2OldestPlayedOnceIn1Call(t *testing.T) {
 				{Key: "game-index", Value: "1"},
 				{Key: "winner", Value: "*"},
 				{Key: "board", Value: "*b*b*b*b|b*b*b*b*|***b*b*b|**b*****|********|r*r*r*r*|*r*r*r*r|r*r*r*r*"},
+			},
+		}, event)
+	event = events[6]
+	require.EqualValues(t,
+		sdk.StringEvent{
+			Type: "game-forfeited",
+			Attributes: []sdk.Attribute{
 				{Key: "game-index", Value: "2"},
 				{Key: "winner", Value: "*"},
 				{Key: "board", Value: "*b*b*b*b|b*b*b*b*|***b*b*b|**b*****|********|r*r*r*r*|*r*r*r*r|r*r*r*r*"},
@@ -356,8 +369,8 @@ func TestForfeitPlayedTwice(t *testing.T) {
 		FifoTailIndex: "-1",
 	}, systemInfo)
 	events := sdk.StringifyEvents(ctx.EventManager().ABCIEvents())
-	require.Len(t, events, 3)
-	event := events[0]
+	require.Len(t, events, 4)
+	event := events[3]
 	require.EqualValues(t, sdk.StringEvent{
 		Type: "game-forfeited",
 		Attributes: []sdk.Attribute{
@@ -428,8 +441,8 @@ func TestForfeitOlderPlayedTwice(t *testing.T) {
 		FifoTailIndex: "2",
 	}, systemInfo)
 	events := sdk.StringifyEvents(ctx.EventManager().ABCIEvents())
-	require.Len(t, events, 3)
-	event := events[0]
+	require.Len(t, events, 5)
+	event := events[4]
 	require.EqualValues(t, sdk.StringEvent{
 		Type: "game-forfeited",
 		Attributes: []sdk.Attribute{
@@ -546,17 +559,23 @@ func TestForfeit2OldestPlayedTwiceIn1Call(t *testing.T) {
 	}, systemInfo)
 
 	events := sdk.StringifyEvents(ctx.EventManager().ABCIEvents())
-	require.Len(t, events, 3)
-	event := events[0]
+	require.Len(t, events, 9)
+	event1 := events[7]
 	require.EqualValues(t, sdk.StringEvent{
 		Type: "game-forfeited",
 		Attributes: []sdk.Attribute{
 			{Key: "game-index", Value: "1"},
 			{Key: "winner", Value: "r"},
 			{Key: "board", Value: "*b*b*b*b|b*b*b*b*|***b*b*b|**b*****|*r******|**r*r*r*|*r*r*r*r|r*r*r*r*"},
+		},
+	}, event1)
+	event2 := events[8]
+	require.EqualValues(t, sdk.StringEvent{
+		Type: "game-forfeited",
+		Attributes: []sdk.Attribute{
 			{Key: "game-index", Value: "2"},
 			{Key: "winner", Value: "r"},
 			{Key: "board", Value: "*b*b*b*b|b*b*b*b*|***b*b*b|**b*****|*r******|**r*r*r*|*r*r*r*r|r*r*r*r*"},
 		},
-	}, event)
+	}, event2)
 }
