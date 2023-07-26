@@ -13,6 +13,7 @@ func (k msgServer) CreateGame(goCtx context.Context, msg *types.MsgCreateGame) (
 	ctx := sdk.UnwrapSDKContext(goCtx)
 
 	systemInfo, found := k.Keeper.GetSystemInfo(ctx)
+	ctx.GasMeter().ConsumeGas(types.CreateGameGas, "Create game")
 	if !found {
 		panic("SystemInfo not found")
 	}

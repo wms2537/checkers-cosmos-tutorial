@@ -68,6 +68,7 @@ func (k msgServer) PlayMove(goCtx context.Context, msg *types.MsgPlayMove) (*typ
 	lastBoard := game.String()
 
 	systemInfo, found := k.Keeper.GetSystemInfo(ctx)
+	ctx.GasMeter().ConsumeGas(types.PlayMoveGas, "Play a move")
 	if !found {
 		panic("SystemInfo not found")
 	}
