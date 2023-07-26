@@ -57,6 +57,7 @@ const (
 	GameForfeitedEventWinner    = "winner"
 	GameForfeitedEventBoard     = "board"
 	GameCreatedEventWager       = "wager"
+	GameCreatedEventDenom       = "denom"
 )
 
 const (
