@@ -5,4 +5,6 @@ release/
 .vscode/
 .DS_Store
 build/
-prod-sim/
+prod-sim/*/config/addrbook.json
+prod-sim/*/data/*
+!prod-sim/*/data/priv_validator_state.json
